@@ -15,6 +15,8 @@ void printList();
 
 void removeDuplicateElements(adress *head);
 
+void push(adress **head, adress *sadr);
+
 void push(adress **head, adress *sadr) {
     adress *new_node;
     new_node = malloc(sizeof(adress));
@@ -44,16 +46,17 @@ void printList(adress **head) {
 void pop(adress **head) {
     adress *next_node = NULL;
     next_node = (*head)->next;
+
     if (head != NULL) {
-        free(*head);
+        //free(*head);
         *head = next_node;
     }
-
+    //printList(head);
 }
 
 void removeEntry(adress **head, adress val) {
-    adress *current = *head;
-    adress *temp_node, *ptrval = NULL;
+    adress *temp_node, *ptrval, *current = NULL;
+    current = *head;
     ptrval = &val;
 
     if (ptrval != NULL) {
@@ -97,14 +100,14 @@ char *getList(adress **head) {
 
 /* Function to remove duplicates from a sorted list */
 void removeDuplicateElements(adress *head) {
-    adress *ptr1, *ptr2, *duplicate;
+    adress *ptr1, *ptr2, *duplicate = NULL;
     ptr1 = head;
 
-    while (ptr1 != NULL && ptr1->next != NULL) {
+    while (ptr1 != NULL && strcmp(ptr1->next->ipadr, "anchor") != 0 && strcmp(ptr1->ipadr, "anchor") != 0) {
         ptr2 = ptr1;
 
         /* Compare the current element with rest of the elements */
-        while (ptr2->next != NULL) {
+        while (strcmp(ptr2->next->ipadr, "anchor") != 0) {
             if (strcmp(ptr1->ipadr, ptr2->next->ipadr) == 0 && strcmp(ptr1->port, ptr2->next->port) == 0) {
                 duplicate = ptr2->next;
                 ptr2->next = ptr2->next->next;

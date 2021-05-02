@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
     char buffer[MAXSIZE];
     struct messagepdu receiveBuffer;
     struct sockaddr_in si_me;
-    char *nameptr = NULL;
+    char *nameptr = malloc(NAMESIZE * sizeof(char));
     int group = 1;
 
     head = malloc(sizeof(adress));
@@ -191,7 +191,7 @@ int main(int argc, char **argv) {
                     string = strdup(receiveBuffer.message);
                     strtok_r(string, ":", &ptr);
 
-                    adress *peerToRemove = NULL;
+                    adress *peerToRemove = malloc(sizeof(adress));
 
                     //remove address from list
                     strcpy(peerToRemove->ipadr, string);
@@ -209,7 +209,8 @@ int main(int argc, char **argv) {
                 fgets(buffer, sizeof(buffer), stdin);
                 if (strlen(buffer) > 1) {
                     printf("%s ... was read from stdin.\n", buffer);
-                    if (strncmp(buffer, "!EXIT", 5) == 0) {
+                    if (strncmp(buffer, "!Exit", 5) == 0 || strncmp(buffer, "!EXIT", 5) == 0 ||
+                        strncmp(buffer, "!exit", 5) == 0) {
                         //EXIT conversation
 
                         //send exit
