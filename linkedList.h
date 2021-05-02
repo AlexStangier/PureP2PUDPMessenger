@@ -44,30 +44,34 @@ void printList(adress **head) {
 void pop(adress **head) {
     adress *next_node = NULL;
     next_node = (*head)->next;
-    if (head != NULL)
-    free(*head);
-    *head = next_node;
+    if (head != NULL) {
+        free(*head);
+        *head = next_node;
+    }
+
 }
 
 void removeEntry(adress **head, adress val) {
     adress *current = *head;
-    adress *temp_node = NULL;
+    adress *temp_node, *ptrval = NULL;
+    ptrval = &val;
 
-
-    if (strcmp((*head)->ipadr, val.ipadr) == 0 && strcmp((*head)->port, val.port) == 0) {
-        pop(head);
-    }
-    while (strcmp(current->next->ipadr, val.ipadr) != 0 && strcmp(current->next->port, val.ipadr) != 0) {
-        if (current->next == NULL) {
-            return;
+    if (ptrval != NULL) {
+        if (strcmp((*head)->ipadr, ptrval->ipadr) == 0 && strcmp((*head)->port, ptrval->port) == 0) {
+            pop(head);
         }
-        current = current->next;
-    }
+        while (strcmp(current->next->ipadr, ptrval->ipadr) != 0 && strcmp(current->next->port, ptrval->ipadr) != 0) {
+            if (current->next == NULL) {
+                return;
+            }
+            current = current->next;
+        }
 
-    temp_node = current->next;
-    current->next = temp_node->next;
-    if (temp_node != NULL)
-        free(temp_node);
+        temp_node = current->next;
+        current->next = temp_node->next;
+        if (temp_node != NULL)
+            free(temp_node);
+    }
 }
 
 char *getList(adress **head) {

@@ -53,8 +53,8 @@ int main(int argc, char **argv) {
     char buffer[MAXSIZE];
     struct messagepdu receiveBuffer;
     struct sockaddr_in si_me;
-    char *nameptr = malloc(NAMESIZE * sizeof(char));
-    int *group = malloc(sizeof(short));
+    char *nameptr = NULL;
+    int group = 1;
 
     head = malloc(sizeof(adress));
     if (head == NULL) {
@@ -91,9 +91,6 @@ int main(int argc, char **argv) {
     printf("Please enter a name to join the chat:\n");
     scanf("%s", nameptr);
 
-    //get group
-    printf("Please enter a group number:\n");
-    scanf("%i", group);
     printf("%s joined the chat!\n", nameptr);
 
     memset((char *) &si_me, 0, sizeof(si_me));
@@ -119,7 +116,7 @@ int main(int argc, char **argv) {
     msgJoin->ttl = 1;
     strcpy(msgJoin->name, nameptr);
     msgJoin->method = JOIN;
-    msgJoin->group = *group;
+    msgJoin->group = group;
 
     sendMessageToProgramParameter(msgJoin, argv);
 
@@ -194,13 +191,11 @@ int main(int argc, char **argv) {
                     string = strdup(receiveBuffer.message);
                     strtok_r(string, ":", &ptr);
 
-                    adress *peerToRemove = malloc(sizeof(adress));
+                    adress *peerToRemove = NULL;
 
                     //remove address from list
                     strcpy(peerToRemove->ipadr, string);
                     strcpy(peerToRemove->port, ptr);
-
-                    printf("port to be removed: %s\n", ptr);
 
                     removeEntry(&head, *peerToRemove);
 
@@ -357,4 +352,3 @@ void addPeersToList(char *message, adress **head) {
         ptr = strtok(NULL, ",:");
     }
 }
-
