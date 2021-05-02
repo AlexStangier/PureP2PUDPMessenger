@@ -2,20 +2,53 @@
 #include <stdio.h>
 
 typedef struct adress {
-    char ipadr[15];
-    char port[10];
-    short index;
-    short group;
-    struct adress *next;
+    char ipadr[15];         //ipv4 address
+    char port[10];          //port number
+    short index;            //listindex
+    short group;            //desired group
+    struct adress *next;    //next node
 } adress;
 
 static short listIndex = 0;
 
+/**
+ * Add element to last position in list
+ * @param head
+ * @param sadr
+ */
+void push(adress **head, adress *sadr);
+
+/**
+ * Remove last element from list
+ * @param head
+ */
+void pop(adress **head);
+
+/**
+ * Removes the entry from list with the corresponding adress
+ * @param head
+ * @param val
+ */
+void removeEntry(adress **head, adress val);
+
+/**
+ * Returns the current instance of the list
+ * @param head
+ * @return
+ */
+char *getList(adress **head);
+
+/**
+ * Print whole list in the console (used to debug)
+ */
 void printList();
 
+/**
+ * Iterate list and remove all duplicate entries
+ * @param head
+ */
 void removeDuplicateElements(adress *head);
 
-void push(adress **head, adress *sadr);
 
 void push(adress **head, adress *sadr) {
     adress *new_node;
@@ -29,18 +62,6 @@ void push(adress **head, adress *sadr) {
     *head = new_node;
 
     removeDuplicateElements(*head);
-    //printf("\n");
-    //printList(head);
-}
-
-void printList(adress **head) {
-    adress *current = *head;
-    while (strcmp(current->ipadr, "anchor") != 0) {
-        printf("index: %hd\n", current->index);
-        printf("ip: %s\n", current->ipadr);
-        printf("port: %s\n", current->port);
-        current = current->next;
-    }
 }
 
 void pop(adress **head) {
@@ -48,7 +69,6 @@ void pop(adress **head) {
     next_node = (*head)->next;
 
     if (head != NULL) {
-        //free(*head);
         *head = next_node;
     }
     //printList(head);
@@ -98,7 +118,16 @@ char *getList(adress **head) {
     return string;
 }
 
-/* Function to remove duplicates from a sorted list */
+void printList(adress **head) {
+    adress *current = *head;
+    while (strcmp(current->ipadr, "anchor") != 0) {
+        printf("index: %hd\n", current->index);
+        printf("ip: %s\n", current->ipadr);
+        printf("port: %s\n", current->port);
+        current = current->next;
+    }
+}
+
 void removeDuplicateElements(adress *head) {
     adress *ptr1, *ptr2, *duplicate = NULL;
     ptr1 = head;
