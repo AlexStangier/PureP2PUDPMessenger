@@ -46,7 +46,7 @@ adress *head;
  * Addresses have to inherit the following structures in order to be used by the application:
  * {a.b.c.address} {xxxxx} where the first parameter is the ipv4 address and the second parameter
  * is defining the desired port.
- * The first pair will be used for your own Peer.
+ * The first pair will be used for your own Peer. The second must be a running peer.
  */
 int main(int argc, char **argv) {
     int ssocket, retval;
@@ -148,8 +148,7 @@ int main(int argc, char **argv) {
                 //handle join
                 if (receiveBuffer.method == JOIN) {
                     //copy message
-                    char *string;
-                    char *ptr;
+                    char *string, *ptr = NULL;
                     string = strdup(receiveBuffer.message);
                     strtok_r(string, ":", &ptr);
 
@@ -186,8 +185,7 @@ int main(int argc, char **argv) {
                 //handle exit
                 if (receiveBuffer.method == EXIT) {
 
-                    char *string;
-                    char *ptr;
+                    char *string, *ptr = NULL;
                     string = strdup(receiveBuffer.message);
                     strtok_r(string, ":", &ptr);
 
@@ -324,9 +322,9 @@ void sendMessageToProgramParameter(struct messagepdu *msgJoin, char **argv) {
 
 void sendJoinReply(char *ipv4, char *port, adress **head) {
     struct messagepdu message;
+    char *ptr = NULL;
     message.method = JOIN_RESPONSE;
     message.ttl = 0;
-    char *ptr;
     ptr = getList(head);
     strcpy(message.message, ptr);
 
@@ -335,7 +333,7 @@ void sendJoinReply(char *ipv4, char *port, adress **head) {
 
 void addPeersToList(char *message, adress **head) {
     //iterate list with delimiter
-    char *ptr;
+    char *ptr = NULL;
     int i = 0;
     ptr = strtok(message, ",:");
     adress *padr = malloc(sizeof(adress));
